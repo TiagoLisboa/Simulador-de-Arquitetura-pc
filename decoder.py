@@ -12,7 +12,7 @@ def div (comp):
 
 def push (comp, data):
     return comp["pilha"].append(int(data))
-    
+
 
 def pop (comp,  memslot = -1):
     data = comp["pilha"].pop()
@@ -31,7 +31,7 @@ decoder = {
     "POP": pop
     }
 
-def decode (comp, args):
-    args = args.split()
-    
+def decode (comp):
+    # if type (comp["ir"]) is list:
+    args = comp["ir"].split()
     return decoder[args[0]](comp, *args[1:])
