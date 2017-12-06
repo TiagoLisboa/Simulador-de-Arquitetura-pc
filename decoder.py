@@ -11,16 +11,16 @@ def div (comp):
     return
 
 def push (comp, data):
-    return comp["pilha"].append(int(data))
+	data = getFromMem (comp, data[1:]) if (data.startswith("$")) else data
+	comp["pilha"].append(int(data))
+	return data
 
 
-def pop (comp,  memslot = -1):
-    data = comp["pilha"].pop()
-    if memslot >= 0:
-        comp["datamem"][memslot] = data
-    else:
-        comp["datamem"].append(data)
-    return data
+def pop (comp,  memslot):
+	comp["mbr"] = comp["pilha"].pop()
+	comp["mar"] = memslot[1:]
+	comp["datamem"][int(comp["mar"])] = comp["mbr"]
+	return comp["mbr"]
 
 decoder = {
     "ADD": add,
@@ -31,7 +31,12 @@ decoder = {
     "POP": pop
     }
 
+def getFromMem (comp, idx):
+	comp["mar"] = idx
+	comp["mbr"] = comp["datamem"][int(comp["mar"])]
+	comp["mbr"] = comp["mbr"] if comp["mbr"] else 0
+	return comp["mbr"]
+
 def decode (comp):
-    # if type (comp["ir"]) is list:
-    args = comp["ir"].split()
-    return decoder[args[0]](comp, *args[1:])
+	args = comp["ir"].split()	
+	return decoder[args[0]](comp, *args[1:])

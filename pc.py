@@ -3,8 +3,8 @@ from decoder import decode
 MEMSIZE = 125000
 
 comp = {
-        "instmem": ["PUSH 1", "PUSH 2", "ADD", "POP"],
-        "datamem": [],
+        "instmem": ["PUSH $0", "PUSH $1", "ADD", "POP $2"],
+        "datamem": [1, 2],
         "pilha": [],
         "ir": 0,
         "pc": 0,
