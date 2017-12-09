@@ -14,7 +14,8 @@ sc = {
             },
         "insts": {
             "window": 0,
-            "panel": 0
+            "panel": 0,
+            "selected": 0
             },
         "monitor": {
             "window": 0,
@@ -26,15 +27,19 @@ sc = {
 
 def populate_insts ():
     lh,lw = sc["insts"]["window"].getmaxyx()
+    curses.init_pair(1, curses.COLOR_RED, curses.COLOR_WHITE)
+    curses.init_pair(2, curses.COLOR_WHITE, curses.COLOR_BLACK)
     for line, instruct in enumerate(comp["instmem"]):
         if (instruct == None):
             break
         else:
             print (line)
             if (line+2 < lh):
-                sc["insts"]["window"].addstr (line+1, 1, "{} - {} {}".format(line, instruct,
-                    "<" if line == comp["pc"] else ""
-                    ))
+                sc["insts"]["window"].addstr (
+                        line+1, 1, 
+                        "{} - {} {}".format(line, instruct,"<" if line == comp["pc"] else ""),
+                        curses.color_pair (1) if line == sc["insts"]["selected"] else curses.color_pair (2)
+                        )
 
 def populate_mem ():
     lh,lw = sc["dmem"]["window"].getmaxyx()
@@ -107,13 +112,22 @@ def update (stdscr):
     curses.panel.update_panels()
 
     stdscr.refresh ()
-    stdscr.getkey()
 
 
 def main (stdscr): 
     update (stdscr)
 
-    exec_next_inst ()
+
+    c = stdscr.getch ()
+
+    if c == 27:
+        return 0
+    elif c == curses.KEY_DOWN:
+        sc["insts"]["selected"] += 1
+    elif c == curses.KEY_UP:
+        sc["insts"]["selected"] -= 1
+    elif c == curses.KEY_ENTER or c == 10:
+        exec_next_inst ()
 
     main (stdscr)
 
