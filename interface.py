@@ -30,14 +30,13 @@ def populate_insts ():
     curses.init_pair(1, curses.COLOR_RED, curses.COLOR_WHITE)
     curses.init_pair(2, curses.COLOR_WHITE, curses.COLOR_BLACK)
     for line, instruct in enumerate(comp["instmem"]):
-        if (instruct == None):
-            break
-        else:
-            print (line)
+        #if (instruct == None):
+        #    break
+        #else:
             if (line+2 < lh):
                 sc["insts"]["window"].addstr (
                         line+1, 1, 
-                        "{} - {} {}".format(line, instruct,"<" if line == comp["pc"] else ""),
+                        "{} - {} {}".format(line, instruct if instruct != None else "","< NEXT" if line == comp["pc"] else ""),
                         curses.color_pair (1) if line == sc["insts"]["selected"] else curses.color_pair (2)
                         )
 
@@ -117,7 +116,6 @@ def update (stdscr):
 def main (stdscr): 
     update (stdscr)
 
-
     c = stdscr.getch ()
 
     if c == 27:
@@ -128,6 +126,19 @@ def main (stdscr):
         sc["insts"]["selected"] -= 1
     elif c == curses.KEY_ENTER or c == 10:
         exec_next_inst ()
+    elif c == 263:
+        try:
+            comp["instmem"][sc["insts"]["selected"]] = comp["instmem"][sc["insts"]["selected"]][:-1]
+        except TypeError:
+            comp["instmem"][sc["insts"]["selected"]] = ""
+
+    else:
+        try:
+            comp["instmem"][sc["insts"]["selected"]] += chr (c)
+        except TypeError:
+            comp["instmem"][sc["insts"]["selected"]] = chr (c)
+
+
 
     main (stdscr)
 
