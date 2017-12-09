@@ -1,6 +1,7 @@
 from curses import wrapper
 import curses, curses.panel
 from pc import comp
+from pc import exec_next_inst 
 
 sc = {
         "dmem": {
@@ -93,12 +94,9 @@ def make_panel (h,l, y,x, s):
     panel = curses.panel.new_panel (win)
     return win, panel
 
-
-def main (stdscr):
+def update (stdscr):
     h,w = stdscr.getmaxyx()
     stdscr.clear ()
-
-    pad = curses.newpad (100, 100)
     
     setup (w, h) 
 
@@ -111,4 +109,13 @@ def main (stdscr):
     stdscr.refresh ()
     stdscr.getkey()
 
+
+def main (stdscr): 
+    update (stdscr)
+
+    exec_next_inst ()
+
+    main (stdscr)
+
+    
 wrapper (main)
