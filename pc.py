@@ -4,7 +4,7 @@ MEMSIZE = 1000
 QTDREGS = 100
 
 comp = {
-        "instmem": ["PUSH $0", "PUSH $1", "DIV", "POP $2"],
+        "instmem": ["PUSH $1", "PUSH $2", "DIV", "POP $2"],
         "datamem": [3, 5],
         "pilha": [],
         "ir": 0,

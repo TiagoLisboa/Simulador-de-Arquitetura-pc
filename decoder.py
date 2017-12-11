@@ -26,9 +26,18 @@ def div (comp):
     comp["log"].append ( "({}) pilha[TOS] ↢ ({}) pilha[TOS] / ({}) pilha[TOS-1]".format(res, a, b) )
     return comp["pilha"].append(res)
 
+def jae (comp, pc):
+    a = comp["pilha"][-2:][1]
+    b = comp["pilha"][-2:][0]
+    res = a >= b
+    comp["log"].append ( "(({}) pilha[TOS] >= ({}) pilha[TOS-1]) == {}".format(a, b, res) )
+    if res:
+        comp["pc"] = int(pc)-1
+    return comp["pc"]
+
 def push (comp, memslot):
     if memslot.startswith ("$"):
-        comp["mar"] = memslot[1:]
+        comp["mar"] = int(memslot[1:])-1
         comp["log"].append ( "mar            ↢ ${}".format ( int(comp["mar"]) + 1 ) )
 
         comp["mbr"] = getFromMem (comp, comp["mar"])
@@ -45,7 +54,7 @@ def push (comp, memslot):
 def pop (comp,  memslot):
     comp["mbr"] = comp["pilha"].pop()
     comp["log"].append ( "mbr            ↢ pilha[TOS] ({})".format ( comp["mbr"]) )
-    comp["mar"] = memslot[1:]
+    comp["mar"] = int(memslot[1:])-1
     comp["log"].append ( "mar            ↢ ${}".format ( int(comp["mar"]) + 1 ) )
     comp["datamem"][int(comp["mar"])] = comp["mbr"]
     comp["log"].append ( "(${}) mem[mar]  ↢ mbr ({})".format (int(comp["mar"]), comp["mbr"]) )
@@ -57,7 +66,8 @@ decoder = {
     "MUL": mul,
     "DIV": div,
     "PUSH": push,
-    "POP": pop
+    "POP": pop,
+    "JAE": jae
     }
 
 def getFromMem (comp, idx):
