@@ -33,21 +33,19 @@ def update_insts ():
     curses.init_pair(1, curses.COLOR_RED, curses.COLOR_WHITE)
     curses.init_pair(2, curses.COLOR_WHITE, curses.COLOR_BLACK)
 
-    result = [a for i, a in enumerate(comp["instmem"]) if i >= sc["insts"]["start_show"]]
+    result = comp["instmem"][sc["insts"]["start_show"]:]
+
     for line, instruct in enumerate(result):
-        #if (instruct == None):
-        #    break
-        #else:
-            if (line+2 < lh):
-                sc["insts"]["window"].addstr (
-                        line+1, 1,
-                        "{} - {} {}".format(line+sc["insts"]["start_show"], instruct if instruct != None else "","< NEXT" if line == comp["pc"] - sc["insts"]["start_show"] else ""),
-                        curses.color_pair (1) if line == sc["insts"]["selected"] - sc["insts"]["start_show"] else curses.color_pair (2)
-                        )
+        if (line+2 < lh):
+            sc["insts"]["window"].addstr (
+                    line+1, 1,
+                    "{} - {} {}".format(line+sc["insts"]["start_show"]+1, instruct if instruct != None else "","< NEXT" if line == comp["pc"] - sc["insts"]["start_show"] else ""),
+                    curses.color_pair (1) if line == sc["insts"]["selected"] - sc["insts"]["start_show"] else curses.color_pair (2)
+                    )
 
 # MEMORIA
 
-def populate_mem ():
+def update_mem ():
     lh,lw = sc["dmem"]["window"].getmaxyx()
     l = 1
     sc["dmem"]["window"].move (l,1)
@@ -66,7 +64,7 @@ def populate_mem ():
 
 # PILHA
 
-def populate_pilha ():
+def update_pilha ():
     lh,lw = sc["pilha"]["window"].getmaxyx()
     l = 1
     sc["pilha"]["window"].move (l,1)
@@ -83,11 +81,29 @@ def populate_pilha ():
     except Exception as e:
         print (e)
 
+# MONITOR
+
+def update_monitor ():
+    curses.init_pair(1, curses.COLOR_RED, curses.COLOR_WHITE)
+    window = sc["monitor"]["window"]
+    window.addstr ( 1, 1,   "PC: ${}".format( comp["pc"] + 1 ) )
+    window.addstr ( 1, 20,  "IR: {}".format( comp["ir"] ) )
+    window.addstr ( 2, 1,   "MAR: ${}".format( int(comp["mar"]) + 1 ) )
+    window.addstr ( 2, 20,  "MBR: {}".format( comp["mbr"] ) )
+    window.addstr ( 3, 1, "LOG:", curses.color_pair (1) )
+
+    lh,_ = window.getmaxyx()
+    lh -= 5
+
+    result = comp["log"][-lh:]
+
+    for i, log in enumerate(result):
+        window.addstr ( i+4, 1, log )
 
 def setup (w, h):
     dmw, dmp = make_panel (int(h*.8),int(w*.6), 0,0, "Memoria de dados")
     rw, rp = make_panel (h-int(h*.8),int(w*.6), int(h*.8),0, "Pilha")
-    iw, ip = make_panel (h - int(h*.4),int(w*.4), int(h*.4), int(w*.6), "Instruções")
+    iw, ip = make_panel (h - int(h*.4),int(w*.4), int(h*.4), int(w*.6), "Memoria de instruções")
     mw, mp = make_panel (int(h*.4),int(w*.4), 0,int(w*.6), "Monitor")
 
 
@@ -122,8 +138,9 @@ def update (stdscr):
     setup (w, h) 
 
     update_insts ()
-    populate_mem ()
-    populate_pilha ()
+    update_mem ()
+    update_pilha ()
+    update_monitor ()
     
     curses.panel.update_panels()
 

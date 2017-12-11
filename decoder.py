@@ -1,5 +1,9 @@
 def add (comp):
-    return comp["pilha"].append( comp["pilha"].pop() + comp["pilha"].pop() )
+    a = comp["pilha"].pop()
+    b = comp["pilha"].pop()
+    res = a + b
+    comp["log"].append ( "({}) pilha[TOS] ↢ ({}) pilha[TOS] + ({}) pilha[TOS-1]".format(res, a, b) )
+    return comp["pilha"].append(res)
 
 def sub (comp):
     return
@@ -10,17 +14,30 @@ def mul (comp):
 def div (comp):
     return
 
-def push (comp, data):
-	data = getFromMem (comp, data[1:]) if (data.startswith("$")) else data
-	comp["pilha"].append(int(data))
-	return data
+def push (comp, memslot):
+    if memslot.startswith ("$"):
+        comp["mar"] = memslot[1:]
+        comp["log"].append ( "mar            ↢ ${}".format ( int(comp["mar"]) + 1 ) )
+
+        comp["mbr"] = getFromMem (comp, comp["mar"])
+        comp["log"].append ( "({}) mbr        ↢ mem[mar] (${})".format ( comp["mbr"], int(comp["mar"]) + 1 ) )
+    else:
+        comp["mbr"] = memslot
+        comp["log"].append ( "mbr            ↢ {}".format (comp["mbr"]) )
+
+    comp["pilha"].append(int(comp["mbr"]))
+    comp["log"].append ( "pilha[TOS]     ↢ mbr ({})".format (comp["mbr"]) )
+    return comp["mbr"]
 
 
 def pop (comp,  memslot):
-	comp["mbr"] = comp["pilha"].pop()
-	comp["mar"] = memslot[1:]
-	comp["datamem"][int(comp["mar"])] = comp["mbr"]
-	return comp["mbr"]
+    comp["mbr"] = comp["pilha"].pop()
+    comp["log"].append ( "mbr            ↢ pilha[TOS] ({})".format ( comp["mbr"]) )
+    comp["mar"] = memslot[1:]
+    comp["log"].append ( "mar            ↢ ${}".format ( int(comp["mar"]) + 1 ) )
+    comp["datamem"][int(comp["mar"])] = comp["mbr"]
+    comp["log"].append ( "(${}) mem[mar]  ↢ mbr ({})".format (int(comp["mar"]), comp["mbr"]) )
+    return comp["mbr"]
 
 decoder = {
     "ADD": add,
