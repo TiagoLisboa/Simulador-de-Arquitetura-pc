@@ -1,6 +1,8 @@
-# Simulador-de-Arquitetura-pc
-Repositório para conter um projeto de simulação de uma arquitetura PC para a disciplina de Arquitetura de Computadores.
-
+# Simulador de Arquitetura de Computador (Pilha)
+## Feito Por
+[@Tiago](https://github.com/TiagoLisboa) <br />
+[@Rute](https://github.com/rutefernandes)
+## Especificações
 - Tamanho das memórias:
   * principal: 2000 blocos
 
