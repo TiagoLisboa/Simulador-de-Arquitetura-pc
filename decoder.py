@@ -6,13 +6,25 @@ def add (comp):
     return comp["pilha"].append(res)
 
 def sub (comp):
-    return
+    a = comp["pilha"].pop()
+    b = comp["pilha"].pop()
+    res = a - b
+    comp["log"].append ( "({}) pilha[TOS] ↢ ({}) pilha[TOS] - ({}) pilha[TOS-1]".format(res, a, b) )
+    return comp["pilha"].append(res)
 
 def mul (comp):
-    return
+    a = comp["pilha"].pop()
+    b = comp["pilha"].pop()
+    res = a * b
+    comp["log"].append ( "({}) pilha[TOS] ↢ ({}) pilha[TOS] * ({}) pilha[TOS-1]".format(res, a, b) )
+    return comp["pilha"].append(res)
 
 def div (comp):
-    return
+    a = comp["pilha"].pop()
+    b = comp["pilha"].pop()
+    res = a // b
+    comp["log"].append ( "({}) pilha[TOS] ↢ ({}) pilha[TOS] / ({}) pilha[TOS-1]".format(res, a, b) )
+    return comp["pilha"].append(res)
 
 def push (comp, memslot):
     if memslot.startswith ("$"):

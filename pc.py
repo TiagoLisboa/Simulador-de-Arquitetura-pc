@@ -4,8 +4,8 @@ MEMSIZE = 1000
 QTDREGS = 100
 
 comp = {
-        "instmem": ["PUSH $0", "PUSH $1", "ADD", "POP $2"],
-        "datamem": [1, 2],
+        "instmem": ["PUSH $0", "PUSH $1", "DIV", "POP $2"],
+        "datamem": [3, 5],
         "pilha": [],
         "ir": 0,
         "pc": 0,
@@ -24,7 +24,7 @@ for i in range (0, 999):
 def exec_next_inst ():
     comp["ir"] = comp["instmem"][comp["pc"]]
     
-    comp["log"].append ( "ir             ↢ instmem[pc] (${})".format ( int(comp["pc"]) + 1 ) )
+    comp["log"].append ( "ir             ↢ instmem[pc (${})] ({})".format ( int(comp["pc"]) + 1 , comp["ir"] ) )
 
     if comp["pc"] < 999:
         comp["pc"] += 1 
