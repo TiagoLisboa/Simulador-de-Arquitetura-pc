@@ -35,6 +35,33 @@ def jae (comp, pc):
         comp["pc"] = int(pc)-1
     return comp["pc"]
 
+def jbe (comp, pc):
+    a = comp["pilha"][-2:][1]
+    b = comp["pilha"][-2:][0]
+    res = a <= b
+    comp["log"].append ( "(({}) pilha[TOS] <= ({}) pilha[TOS-1]) == {}".format(a, b, res) )
+    if res:
+        comp["pc"] = int(pc)-1
+    return comp["pc"]
+
+def ja (comp, pc):
+    a = comp["pilha"][-2:][1]
+    b = comp["pilha"][-2:][0]
+    res = a > b
+    comp["log"].append ( "(({}) pilha[TOS] > ({}) pilha[TOS-1]) == {}".format(a, b, res) )
+    if res:
+        comp["pc"] = int(pc)-1
+    return comp["pc"]
+
+def jb (comp, pc):
+    a = comp["pilha"][-2:][1]
+    b = comp["pilha"][-2:][0]
+    res = a < b
+    comp["log"].append ( "(({}) pilha[TOS] < ({}) pilha[TOS-1]) == {}".format(a, b, res) )
+    if res:
+        comp["pc"] = int(pc)-1
+    return comp["pc"]
+
 def push (comp, memslot):
     if memslot.startswith ("$"):
         comp["mar"] = int(memslot[1:])-1
@@ -67,7 +94,10 @@ decoder = {
     "DIV": div,
     "PUSH": push,
     "POP": pop,
-    "JAE": jae
+    "JAE": jae,
+    "JBE": jbe,
+    "JA": ja,
+    "JB": jb
     }
 
 def getFromMem (comp, idx):
