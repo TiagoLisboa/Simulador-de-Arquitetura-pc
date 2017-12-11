@@ -1,7 +1,7 @@
 # Simulador de Arquitetura de Computador (Pilha)
 ## Feito Por
-[@Tiago](https://github.com/TiagoLisboa) <br />
-[@Rute](https://github.com/rutefernandes)
+[Tiago Lisboa](https://github.com/TiagoLisboa) <br />
+[Rute Fernandes](https://github.com/rutefernandes)
 ## Especificações
 - Tamanho das memórias:
   * principal: 2000 blocos
