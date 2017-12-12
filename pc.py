@@ -31,7 +31,7 @@ def exec_next_inst ():
     else:
         comp["pc"]=0
 
-    comp["log"].append ( "pc             ↢ ${}".format ( int(comp["pc"]) + 1 ) )
+    comp["log"].append ( "pc             ↢ {}".format ( int(comp["pc"]) + 1 ) )
 
     if comp["ir"]:
         decode (comp)

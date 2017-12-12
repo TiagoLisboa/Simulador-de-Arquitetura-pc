@@ -33,6 +33,7 @@ def jae (comp, pc):
     comp["log"].append ( "(({}) pilha[TOS] >= ({}) pilha[TOS-1]) == {}".format(a, b, res) )
     if res:
         comp["pc"] = int(pc)-1
+        comp["log"].append ( "pc             ↢ {}".format ( int(comp["pc"]) + 1 ) )
     return comp["pc"]
 
 def jbe (comp, pc):
@@ -42,6 +43,7 @@ def jbe (comp, pc):
     comp["log"].append ( "(({}) pilha[TOS] <= ({}) pilha[TOS-1]) == {}".format(a, b, res) )
     if res:
         comp["pc"] = int(pc)-1
+        comp["log"].append ( "pc             ↢ {}".format ( int(comp["pc"]) + 1 ) )
     return comp["pc"]
 
 def ja (comp, pc):
@@ -51,6 +53,7 @@ def ja (comp, pc):
     comp["log"].append ( "(({}) pilha[TOS] > ({}) pilha[TOS-1]) == {}".format(a, b, res) )
     if res:
         comp["pc"] = int(pc)-1
+        comp["log"].append ( "pc             ↢ {}".format ( int(comp["pc"]) + 1 ) )
     return comp["pc"]
 
 def jb (comp, pc):
@@ -60,6 +63,7 @@ def jb (comp, pc):
     comp["log"].append ( "(({}) pilha[TOS] < ({}) pilha[TOS-1]) == {}".format(a, b, res) )
     if res:
         comp["pc"] = int(pc)-1
+        comp["log"].append ( "pc             ↢ {}".format ( int(comp["pc"]) + 1 ) )
     return comp["pc"]
 
 def push (comp, memslot):
@@ -88,16 +92,16 @@ def pop (comp,  memslot):
     return comp["mbr"]
 
 decoder = {
-    "ADD": add,
-    "SUB": sub,
-    "MUL": mul,
-    "DIV": div,
-    "PUSH": push,
-    "POP": pop,
-    "JAE": jae,
-    "JBE": jbe,
-    "JA": ja,
-    "JB": jb
+    "ADD"   : add,
+    "SUB"   : sub,
+    "MUL"   : mul,
+    "DIV"   : div,
+    "PUSH"  : push,
+    "POP"   : pop,
+    "JAE"   : jae,
+    "JBE"   : jbe,
+    "JA"    : ja,
+    "JB"    : jb
     }
 
 def getFromMem (comp, idx):
